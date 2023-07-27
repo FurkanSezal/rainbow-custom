@@ -56,19 +56,19 @@ export const SafepalV2 = ({
     },
 
     createConnector: () => {
-      // console.log("isSafePalWallet: ", getSafePalWalletInjectedProvider());
+      console.log("shouldUseWalletConnect: ", shouldUseWalletConnect);
+      console.log("_isSafePalInjected", _isSafePalInjected);
 
-      //  const connector = getSafePalWalletInjectedProvider()
-      let connector;
-
-      if (!shouldUseWalletConnect) {
-        connector = new InjectedConnector({
-          chains,
-        });
-      } else {
-        connector = getWalletConnectConnector({ projectId, chains });
-      }
-
+      const connector = shouldUseWalletConnect
+        ? getWalletConnectConnector({
+            projectId,
+            chains,
+            version: walletConnectVersion,
+          })
+        : new InjectedConnector({
+            projectId,
+            chains,
+          });
       return {
         connector,
         mobile: {
