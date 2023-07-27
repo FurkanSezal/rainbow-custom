@@ -33,7 +33,6 @@ export const SafepalV2 = ({
     name: "SafePalV2",
     iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
     iconBackground: "#ffffff",
-    installed: shouldUseWalletConnect ? isSafePalInjected : undefined,
 
     downloadUrls: {
       android:
