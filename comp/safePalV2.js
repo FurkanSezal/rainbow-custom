@@ -6,30 +6,14 @@ import {
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
-function getSafePalWalletInjectedProvider() {
-  let _a;
+function isSafePal(ethereum) {
+  const isSafePal = Boolean(ethereum.isSafePal);
 
-  const isSafePalWallet = (ethereum) => {
-    const safePal2 = !!ethereum.isSafePal;
-    return safePal2;
-  };
-  const injectedProviderExist =
-    typeof window !== "undefined" && typeof window.ethereum !== "undefined";
-
-  if (!injectedProviderExist) {
-    return;
-  }
-  /*   if (window["safePal"]) {
-      return window["safePal"];
-    } */
-  if (isSafePalWallet(window.ethereum)) {
-    return true;
-  } else {
+  if (!isSafePal) {
     return false;
   }
-  if ((_a = window.ethereum) == null ? void 0 : _a.providers) {
-    return window.ethereum.providers.find(isSafePalWallet);
-  }
+
+  return true;
 }
 
 export const SafepalV2 = ({
@@ -37,15 +21,18 @@ export const SafepalV2 = ({
   projectId,
   walletConnectVersion = "2",
 }) => {
-  const _isSafePalInjected = Boolean(getSafePalWalletInjectedProvider());
-  const shouldUseWalletConnect = !getSafePalWalletInjectedProvider();
+  const isSafePalInjected =
+    typeof window !== "undefined" &&
+    typeof window.ethereum !== "undefined" &&
+    isSafePal(window.ethereum);
+  const shouldUseWalletConnect = !isSafePalInjected;
 
   return {
     id: "SafePalV2",
     name: "SafePalV2",
     iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
     iconBackground: "#ffffff",
-    installed: true,
+    installed: shouldUseWalletConnect ? isSafePalInjected : undefined,
 
     downloadUrls: {
       android:
@@ -57,12 +44,17 @@ export const SafepalV2 = ({
 
     createConnector: () => {
       console.log("shouldUseWalletConnect: ", shouldUseWalletConnect);
-      console.log("_isSafePalInjected", _isSafePalInjected);
+      console.log("_isSafePalInjected", isSafePalInjected);
 
-      const connector = new InjectedConnector({
-        projectId,
-        chains,
-      });
+      const connector = shouldUseWalletConnect
+        ? getWalletConnectConnector({
+            projectId,
+            chains,
+            version: walletConnectVersion,
+          })
+        : new InjectedConnector({
+            chains,
+          });
       return {
         connector,
         mobile: {
