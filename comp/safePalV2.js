@@ -22,7 +22,6 @@ export const SafepalV2 = ({
   projectId,
   walletConnectVersion = "2",
 }) => {
-  console.log(window.ethereum.isSafePal);
   const isSafePalInjected =
     typeof window !== "undefined" &&
     typeof window.ethereum !== "undefined" &&
