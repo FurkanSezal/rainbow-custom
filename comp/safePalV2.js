@@ -21,6 +21,7 @@ export const SafepalV2 = ({
   chains,
   projectId,
   walletConnectVersion = "2",
+  ...options
 }) => {
   const isSafePalInjected =
     typeof window !== "undefined" &&
@@ -54,6 +55,7 @@ export const SafepalV2 = ({
           })
         : new InjectedConnector({
             chains,
+            options,
           });
       return {
         connector,
