@@ -14,6 +14,7 @@ import {
   trustWallet,
   walletConnectWallet,
   metaMaskWallet,
+  rainbowWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { SafepalV2 } from "../comp/safePalV2";
 
@@ -52,6 +53,7 @@ const connectors = connectorsForWallets([
       walletConnectWallet({ chains, projectId }),
       trustWallet({ chains, projectId }),
       SafepalV2({ chains, projectId }),
+      rainbowWallet({ chains, projectId }),
     ],
   },
 ]);

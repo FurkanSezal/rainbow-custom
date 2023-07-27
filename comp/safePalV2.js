@@ -6,6 +6,17 @@ import {
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
+function isSafePal(ethereum) {
+  const isSafePal = Boolean(ethereum.isSafePal);
+  console.log("isSafePal: ", isSafePal);
+
+  if (!isSafePal) {
+    return false;
+  }
+
+  return true;
+}
+
 export const SafepalV2 = ({
   chains,
   projectId,
@@ -16,17 +27,6 @@ export const SafepalV2 = ({
     typeof window.ethereum !== "undefined" &&
     isSafePal(window.ethereum);
   const shouldUseWalletConnect = !isSafePalInjected;
-
-  function isSafePal(ethereum) {
-    const isSafePal = Boolean(ethereum.isSafePal);
-    console.log("isSafePal: ", isSafePal);
-
-    if (!isSafePal) {
-      return false;
-    }
-
-    return true;
-  }
 
   return {
     id: "SafePalV2",
