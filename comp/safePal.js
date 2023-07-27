@@ -39,7 +39,6 @@ export const Safepal = ({ chains, projectId, walletConnectVersion = "2" }) => ({
   name: "SafePal",
   iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
   iconBackground: "#ffffff",
-  installed: isSafePalInjected || void 0,
 
   downloadUrls: {
     android: "https://play.google.com/store/apps/details?id=io.safepal.wallet",
