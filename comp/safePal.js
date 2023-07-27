@@ -6,7 +6,7 @@ import {
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
-const isSafePalInjectedx = getSafePalWalletInjectedProvider();
+const isSafePalInjected = getSafePalWalletInjectedProvider();
 
 function getSafePalWalletInjectedProvider() {
   let _a;
@@ -34,27 +34,12 @@ function getSafePalWalletInjectedProvider() {
   }
 }
 
-function isRainbow() {
-  // `isRainbow` needs to be added to the wagmi `Ethereum` object
-  const isRainbow = Boolean(ethereum.isRainbow);
-
-  if (!isRainbow) {
-    return false;
-  }
-
-  return true;
-}
-
-const isRainbowInjected =
-  typeof window !== "undefined" &&
-  typeof window.ethereum !== "undefined" &&
-  isRainbow(window.ethereum);
-
 export const Safepal = ({ chains, projectId, walletConnectVersion = "2" }) => ({
   id: "SafePal",
   name: "SafePal",
   iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
   iconBackground: "#ffffff",
+  installed: isSafePalInjected || void 0,
 
   downloadUrls: {
     android: "https://play.google.com/store/apps/details?id=io.safepal.wallet",

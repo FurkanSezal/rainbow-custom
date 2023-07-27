@@ -15,6 +15,7 @@ import {
   walletConnectWallet,
   metaMaskWallet,
 } from "@rainbow-me/rainbowkit/wallets";
+import { SafepalV2 } from "../comp/safePalV2";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [bscTestnet, mainnet],
@@ -50,9 +51,12 @@ const connectors = connectorsForWallets([
       injectedWallet({ chains }),
       walletConnectWallet({ chains, projectId }),
       trustWallet({ chains, projectId }),
+      SafepalV2({ chains, projectId }),
     ],
   },
 ]);
+const { installed } = SafepalV2;
+console.log(installed);
 
 const wagmiConfig = createConfig({
   autoConnect: true,
