@@ -6,6 +6,8 @@ import {
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
+const isSafePalInjectedx = getSafePalWalletInjectedProvider();
+
 function getSafePalWalletInjectedProvider() {
   let _a;
 
@@ -32,28 +34,50 @@ function getSafePalWalletInjectedProvider() {
   }
 }
 
+function isRainbow() {
+  // `isRainbow` needs to be added to the wagmi `Ethereum` object
+  const isRainbow = Boolean(ethereum.isRainbow);
+
+  if (!isRainbow) {
+    return false;
+  }
+
+  return true;
+}
+
+const isRainbowInjected =
+  typeof window !== "undefined" &&
+  typeof window.ethereum !== "undefined" &&
+  isRainbow(window.ethereum);
+
 export const Safepal = ({ chains, projectId, walletConnectVersion = "2" }) => ({
   id: "SafePal",
   name: "SafePal",
-  iconUrl: "https://i.imgur.com/B5XcGDg.jpeg",
-  iconBackground: "#0c2f78",
+  iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
+  iconBackground: "#ffffff",
+
   downloadUrls: {
-    android:
-      "https://play.google.com/store/apps/details?id=io.safepal.wallet&referrer=utm_source%3Dsafepal.com%26utm_medium%3Ddisplay%26utm_campaign%3Ddownload&pli=1",
-    ios: "https://apps.apple.com/us/app/my-wallet",
+    android: "https://play.google.com/store/apps/details?id=io.safepal.wallet",
+    ios: "https://apps.apple.com/tr/app/safepal-crypto-wallet-btc-nft/id1548297139",
     chrome:
-      "https://chrome.google.com/webstore/detail/safepal-extension-wallet/lgmpcpglpngdoalbgeoldeajfclnhafa",
-    qrCode: "https://my-wallet/qr",
+      "https://www.safepal.com/en/download/?utm_source=bit5&utm_campaign=bit5",
   },
+
   createConnector: () => {
     // console.log("isSafePalWallet: ", getSafePalWalletInjectedProvider());
+    const isSafePalInjected = getSafePalWalletInjectedProvider();
 
-    const connector = getSafePalWalletInjectedProvider()
-      ? new InjectedConnector({
-          chains,
-        })
-      : getWalletConnectConnector({ projectId, chains });
-    // console.log(connector.getProvider());
+    //  const connector = getSafePalWalletInjectedProvider()
+    let connector;
+
+    if (isSafePalInjected) {
+      connector = new InjectedConnector({
+        chains,
+      });
+    } else {
+      connector = getWalletConnectConnector({ projectId, chains });
+    }
+
     return {
       connector,
       mobile: {
@@ -62,16 +86,55 @@ export const Safepal = ({ chains, projectId, walletConnectVersion = "2" }) => ({
           const uri = await new Promise((resolve) =>
             provider.once("display_uri", resolve)
           );
-          return uri;
+          return "https://www.safepal.com/en/download/?utm_source=bit5&utm_campaign=bit5";
         },
       },
+
       qrCode: {
         getUri: async () => {
           const provider = await connector.getProvider();
           const uri = await new Promise((resolve) =>
             provider.once("display_uri", resolve)
           );
-          return uri;
+          return "https://www.safepal.com/en/download/";
+        },
+        instructions: {
+          learnMoreUrl:
+            "https://www.safepal.com/?utm_source=bit5&utm_campaign=bit5",
+          steps: [
+            {
+              description: "We recommend use SafePal browser extension.",
+              step: "install",
+              title: "Open the SafePal app",
+            },
+          ],
+        },
+      },
+
+      extension: {
+        instructions: {
+          learnMoreUrl:
+            "https://www.safepal.com/?utm_source=bit5&utm_campaign=bit5",
+          steps: [
+            {
+              description:
+                "We recommend pinning SafePal to your taskbar for quicker access to your wallet.",
+              step: "install",
+              title: "Install the SafePal extension",
+            },
+            {
+              description:
+                "Be sure to back up your wallet using a secure method. Never share your secret phrase with anyone.",
+              step: "create",
+              title: "Create or Import a Wallet",
+            },
+            {
+              description:
+                "Once you set up your wallet, click below to refresh the browser and load up the extension.",
+              step: "refresh",
+              title: "Refresh your browser",
+            },
+          ],
         },
       },
     };

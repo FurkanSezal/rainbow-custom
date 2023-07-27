@@ -16,6 +16,7 @@ import {
 
 export default function Home() {
   const walletClient = useWalletClient();
+  const publicClient = usePublicClient();
   const { address, isConnecting, isDisconnected } = useAccount();
 
   const { open, close } = useWeb3Modal();
@@ -73,11 +74,14 @@ export default function Home() {
     });
 
     console.log(signature);
+
+    /*   const blockNumber = await publicClient.getBlockNumber();
+    console.log(blockNumber); */
   }
 
   return (
     <>
-      {/*    <div>
+      {/*  <div>
         <Web3Button></Web3Button>
       </div> */}
       <div>

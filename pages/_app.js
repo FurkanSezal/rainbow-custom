@@ -1,7 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { bscTestnet } from "wagmi/chains";
+import { bscTestnet, mainnet } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { EthereumClient } from "@web3modal/ethereum";
@@ -17,16 +17,18 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [bscTestnet],
+  [bscTestnet, mainnet],
   [publicProvider()]
 );
 
 const Disclaimer = ({ Text, Link }) => (
   <Text>
     By connecting your wallet, you agree to the{" "}
-    <Link href="https://termsofservice.xyz">Terms of Service</Link> and
-    acknowledge you have read and understand the protocol{" "}
-    <Link href="https://disclaimer.xyz">Disclaimer</Link>
+    <Link href="https://docs.bit5.com/legal/privacy-policy">
+      Terms of Service
+    </Link>{" "}
+    and acknowledge you have read and understand the protocol{" "}
+    <Link href="https://docs.bit5.com/legal/terms-of-service">Disclaimer</Link>
   </Text>
 );
 
@@ -43,9 +45,10 @@ const connectors = connectorsForWallets([
     groupName: "Recommended",
 
     wallets: [
+      metaMaskWallet({ chains, projectId }),
       Safepal({ chains, projectId }),
       injectedWallet({ chains }),
-      metaMaskWallet({ projectId, chains }),
+      walletConnectWallet({ chains, projectId }),
       trustWallet({ chains, projectId }),
     ],
   },
@@ -63,6 +66,7 @@ export default function App({ Component, pageProps }) {
     <>
       <WagmiConfig config={wagmiConfig}>
         <RainbowKitProvider
+          coolMode
           appInfo={{
             appName: "Bit5 MarketPlace",
             disclaimer: Disclaimer,
