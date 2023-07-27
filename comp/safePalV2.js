@@ -8,6 +8,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 
 function isSafePal(ethereum) {
   const isSafePal = Boolean(ethereum.isSafePal);
+  console.log("isSafePal: ", isSafePal);
 
   if (!isSafePal) {
     return false;
