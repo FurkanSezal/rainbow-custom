@@ -39,12 +39,13 @@ export const SafepalV2 = ({
 }) => {
   const _isSafePalInjected = Boolean(getSafePalWalletInjectedProvider());
   const shouldUseWalletConnect = !getSafePalWalletInjectedProvider();
+
   return {
     id: "SafePalV2",
     name: "SafePalV2",
     iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
     iconBackground: "#ffffff",
-    installed: !shouldUseWalletConnect ? _isSafePalInjected : undefined,
+    installed: shouldUseWalletConnect ? _isSafePalInjected : undefined,
 
     downloadUrls: {
       android:
@@ -56,12 +57,11 @@ export const SafepalV2 = ({
 
     createConnector: () => {
       // console.log("isSafePalWallet: ", getSafePalWalletInjectedProvider());
-      const isSafePalInjected = getSafePalWalletInjectedProvider();
 
       //  const connector = getSafePalWalletInjectedProvider()
       let connector;
 
-      if (isSafePalInjected) {
+      if (!shouldUseWalletConnect) {
         connector = new InjectedConnector({
           chains,
         });

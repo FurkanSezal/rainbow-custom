@@ -55,8 +55,6 @@ const connectors = connectorsForWallets([
     ],
   },
 ]);
-const { installed } = SafepalV2;
-console.log(installed);
 
 const wagmiConfig = createConfig({
   autoConnect: true,
