@@ -7,10 +7,10 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
 function isSafePal(ethereum) {
-  const isSafePal = Boolean(ethereum.isSafePal);
-  console.log("isSafePal: ", isSafePal);
+  const isSafePalx = Boolean(ethereum.isSafePal);
+  console.log("isSafePal: ", isSafePalx);
 
-  if (!isSafePal) {
+  if (!isSafePalx) {
     return false;
   }
 
