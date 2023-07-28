@@ -1,19 +1,10 @@
+import {
+  Chain,
+  Wallet,
+  getWalletConnectConnector,
+} from "@rainbow-me/rainbowkit";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
-
-import { getWalletConnectUri } from "../../../utils/getWalletConnectUri";
-import { isAndroid, isIOS } from "../../../utils/isMobile";
-import { getWalletConnectConnector } from "../../getWalletConnectConnector";
-
-function isRainbow(ethereum) {
-  // `isRainbow` needs to be added to the wagmi `Ethereum` object
-  const isRainbow = Boolean(ethereum.isRainbow);
-
-  if (!isRainbow) {
-    return false;
-  }
-
-  return true;
-}
 
 export const rainbowWallet = ({
   chains,
@@ -22,18 +13,19 @@ export const rainbowWallet = ({
   walletConnectVersion = "2",
   ...options
 }) => {
-  const isRainbowInjected =
+  const isBitKeepInjected =
     typeof window !== "undefined" &&
-    typeof window.ethereum !== "undefined" &&
-    isRainbow(window.ethereum);
+    window.bitkeep !== void 0 &&
+    window.bitkeep.ethereum !== void 0 &&
+    window.bitkeep.ethereum.isBitKeep === true;
+  const shouldUseWalletConnect = !isBitKeepInjected;
 
-  const shouldUseWalletConnect = !isRainbowInjected;
   return {
-    id: "rainbow",
-    name: "Rainbow",
-    iconUrl: async () => (await import("./rainbowWallet.svg")).default,
+    id: "BitKeep",
+    name: "BitKeep",
+    iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
     iconBackground: "#0c2f78",
-    installed: !shouldUseWalletConnect ? isRainbowInjected : undefined,
+    installed: !shouldUseWalletConnect ? isBitKeepInjected : undefined,
     downloadUrls: {
       android:
         "https://play.google.com/store/apps/details?id=me.rainbow&referrer=utm_source%3Drainbowkit&utm_source=rainbowkit",
@@ -44,6 +36,7 @@ export const rainbowWallet = ({
       browserExtension: "https://rainbow.me/extension?utm_source=rainbowkit",
     },
     createConnector: () => {
+      console.log("Bitt: ", shouldUseWalletConnect);
       const connector = shouldUseWalletConnect
         ? getWalletConnectConnector({
             projectId,

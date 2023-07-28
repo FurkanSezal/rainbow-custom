@@ -16,6 +16,7 @@ import {
   metaMaskWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { SafepalV2 } from "../comp/safePalV2";
+import { rainbowWallet } from "../comp/custom";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [bscTestnet, mainnet],
@@ -52,6 +53,7 @@ const connectors = connectorsForWallets([
       walletConnectWallet({ chains, projectId }),
       trustWallet({ chains, projectId }),
       SafepalV2({ chains, projectId }),
+      rainbowWallet({ chains, projectId }),
     ],
   },
 ]);
