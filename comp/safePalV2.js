@@ -7,27 +7,44 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
 function getSafePalWalletInjectedProvider() {
-  var _a;
   const isSafePalWallet = (ethereum) => {
-    const SafePalWallet2 = !!ethereum.isSafePal;
-    return SafePalWallet2;
+    // Identify if Trust Wallet injected provider is present.
+    const SafePalWallet = !!ethereum.isSafePal;
+
+    return SafePalWallet;
   };
+
   const injectedProviderExist =
     typeof window !== "undefined" && typeof window.ethereum !== "undefined";
+
+  // No injected providers exist.
   if (!injectedProviderExist) {
     return;
   }
+
+  // Trust Wallet injected provider is available in the global scope.
+  // There are cases that some cases injected providers can replace window.ethereum
+  // without updating the ethereum.providers array. To prevent issues where
+  // the TW connector does not recognize the provider when TW extension is installed,
+  // we begin our checks by relying on TW's global object.
   if (window["isSafePal"]) {
     return window["isSafePal"];
   }
+
+  // Trust Wallet was injected into window.ethereum.
   if (isSafePalWallet(window.ethereum)) {
     return window.ethereum;
   }
-  if ((_a = window.ethereum) == null ? void 0 : _a.providers) {
+
+  // Trust Wallet provider might be replaced by another
+  // injected provider, check the providers array.
+  if (window.ethereum?.providers) {
+    // ethereum.providers array is a non-standard way to
+    // preserve multiple injected providers. Eventually, EIP-5749
+    // will become a living standard and we will have to update this.
     return window.ethereum.providers.find(isSafePalWallet);
   }
 }
-
 export const SafepalV2 = ({
   chains,
   projectId,
