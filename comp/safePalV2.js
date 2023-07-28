@@ -43,7 +43,8 @@ export const SafepalV2 = ({
         typeof window.ethereum !== "undefined" &&
         isSafePal(window.ethereum);
       const shouldUseWalletConnect = !isSafePalInjected;
-      console.log(window);
+
+      typeof window !== "undefined" && console.log(window);
 
       console.log("shouldUseWalletConnect: ", shouldUseWalletConnect);
       console.log("_isSafePalInjected", isSafePalInjected);
