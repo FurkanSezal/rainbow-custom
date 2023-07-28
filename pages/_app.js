@@ -43,31 +43,6 @@ const Disclaimer = ({ Text, Link }) => (
 
 const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 
-const connectors = connectorsForWallets([
-  {
-    groupName: "Recommended",
-
-    wallets: [
-      metaMaskWallet({ chains, projectId }),
-      Safepal({ chains, projectId }),
-      injectedWallet({ chains }),
-      walletConnectWallet({ chains, projectId }),
-      trustWallet({ chains, projectId }),
-      SafepalV2({ chains, projectId }),
-      rainbowWallet({ chains, projectId }),
-    ],
-  },
-]);
-
-console.log(metaMaskWallet);
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-});
-
 export default function App({ Component, pageProps }) {
   const [a, b] = useState(false);
 
@@ -80,6 +55,29 @@ export default function App({ Component, pageProps }) {
   if (!a) {
     return null;
   }
+
+  const connectors = connectorsForWallets([
+    {
+      groupName: "Recommended",
+
+      wallets: [
+        metaMaskWallet({ chains, projectId }),
+        Safepal({ chains, projectId }),
+        injectedWallet({ chains }),
+        walletConnectWallet({ chains, projectId }),
+        trustWallet({ chains, projectId }),
+        SafepalV2({ chains, projectId }),
+        rainbowWallet({ chains, projectId }),
+      ],
+    },
+  ]);
+
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient,
+    webSocketPublicClient,
+  });
   return (
     <>
       <WagmiConfig config={wagmiConfig}>
