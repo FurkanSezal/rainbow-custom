@@ -74,7 +74,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     setTimeout(() => {
       b(true);
-    }, 500);
+    }, 5000);
   }, []);
 
   if (!a) {
