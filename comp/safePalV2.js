@@ -10,7 +10,7 @@ function getSafePalWalletInjectedProvider() {
   const isSafePalWallet = (ethereum) => {
     // Identify if Trust Wallet injected provider is present.
     const SafePalWallet = !!ethereum.isSafePal;
-
+    console.log("SafePalWallet: ", SafePalWallet, ethereum.isSafePal);
     return SafePalWallet;
   };
 
@@ -50,6 +50,8 @@ export const SafepalV2 = ({
   projectId,
   walletConnectVersion = "2",
 }) => {
+  typeof window !== "undefined" && console.log("window", window);
+  typeof window !== "undefined" && console.log("eth: ", window.ethereum);
   const isSafePalWalletInjected = Boolean(getSafePalWalletInjectedProvider());
   const shouldUseWalletConnect = !isSafePalWalletInjected;
   return {
