@@ -23,12 +23,6 @@ export const SafepalV2 = ({
   projectId,
   walletConnectVersion = "2",
 }) => {
-  const isSafePalInjected =
-    typeof window !== "undefined" &&
-    typeof window.ethereum !== "undefined" &&
-    isSafePal(window.ethereum);
-  const shouldUseWalletConnect = !isSafePalInjected;
-
   return {
     id: "SafePalV2",
     name: "SafePalV2",
@@ -44,6 +38,12 @@ export const SafepalV2 = ({
     },
 
     createConnector: () => {
+      const isSafePalInjected =
+        typeof window !== "undefined" &&
+        typeof window.ethereum !== "undefined" &&
+        isSafePal(window.ethereum);
+      const shouldUseWalletConnect = !isSafePalInjected;
+
       console.log("shouldUseWalletConnect: ", shouldUseWalletConnect);
       console.log("_isSafePalInjected", isSafePalInjected);
 
