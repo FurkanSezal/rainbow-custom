@@ -81,12 +81,12 @@ export default function Home() {
 
   return (
     <>
-      <div>
+      {/*   <div>
         <Web3Button></Web3Button>
-      </div>
-      {/*     <div>
-        <ConnectButton></ConnectButton>
       </div> */}
+      <div>
+        <ConnectButton></ConnectButton>
+      </div>
       <button onClick={() => open()}>Connect</button>
       <Head>
         <title>Create Next App</title>

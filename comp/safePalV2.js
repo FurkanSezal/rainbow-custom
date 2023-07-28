@@ -76,7 +76,7 @@ export const SafepalV2 = ({
             projectId,
             chains,
           })
-        : new InjectedConnector({
+        : new MetaMaskConnector({
             chains,
           });
       return {
