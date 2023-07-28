@@ -44,17 +44,29 @@ const Disclaimer = ({ Text, Link }) => (
 const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 
 export default function App({ Component, pageProps }) {
-  const [a, b] = useState(false);
+  const [a, setA] = useState(false);
+  const [counter, setCounter] = useState(0);
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (typeof window !== "undefined" && window.ethereum) b(true);
-    }, 50);
-  }, []);
+  const checkWindowEthereum = (attempt) => {
+    if (attempt >= 5) {
+      setA(true);
+      return;
+    }
+
+    if (typeof window !== "undefined" && window.ethereum) {
+      setA(true);
+    } else {
+      setTimeout(() => checkWindowEthereum(attempt + 1), 50);
+    }
+  };
 
   if (!a) {
     return null;
   }
+
+  useEffect(() => {
+    checkWindowEthereum(1);
+  }, []);
 
   const connectors = connectorsForWallets([
     {
