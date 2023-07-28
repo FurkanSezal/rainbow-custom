@@ -51,7 +51,9 @@ export const SafepalV2 = ({
   walletConnectVersion = "2",
 }) => {
   typeof window !== "undefined" && console.log("window", window);
-  typeof window !== "undefined" && console.log("eth: ", window.ethereum);
+  typeof window !== "undefined" &&
+    typeof window.ethereum !== "undefined" &&
+    console.log("eth: ", window.ethereum);
   const isSafePalWalletInjected = Boolean(getSafePalWalletInjectedProvider());
   const shouldUseWalletConnect = !isSafePalWalletInjected;
   return {
