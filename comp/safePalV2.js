@@ -9,7 +9,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 function getSafePalWalletInjectedProvider() {
   var _a;
   const isSafePalWallet = (ethereum) => {
-    const SafePalWallet2 = !!ethereum.isTrust;
+    const SafePalWallet2 = !!ethereum.isSafePal;
     return SafePalWallet2;
   };
   const injectedProviderExist =
