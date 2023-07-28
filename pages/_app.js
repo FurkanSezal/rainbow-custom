@@ -17,6 +17,7 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { SafepalV2 } from "../comp/safePalV2";
 import { rainbowWallet } from "../comp/custom";
+import { useEffect, useState } from "react";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [bscTestnet, mainnet],
@@ -68,6 +69,17 @@ const wagmiConfig = createConfig({
 });
 
 export default function App({ Component, pageProps }) {
+  const [a, b] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      b(true);
+    }, 500);
+  }, []);
+
+  if (!a) {
+    return null;
+  }
   return (
     <>
       <WagmiConfig config={wagmiConfig}>

@@ -71,14 +71,9 @@ export const SafepalV2 = ({
     createConnector: () => {
       console.log("shouldUseWalletConnect: ", shouldUseWalletConnect);
 
-      const connector = shouldUseWalletConnect
-        ? getWalletConnectConnector({
-            projectId,
-            chains,
-          })
-        : new MetaMaskConnector({
-            chains,
-          });
+      const connector = new MetaMaskConnector({
+        chains,
+      });
       return {
         connector,
         mobile: {
