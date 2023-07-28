@@ -9,6 +9,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 function isSafePal(ethereum) {
   const isSafePal = Boolean(ethereum.isSafePal);
   console.log("isSafePal: ", isSafePal);
+  console.log(window);
 
   if (!isSafePal) {
     return false;
@@ -21,7 +22,6 @@ export const SafepalV2 = ({
   chains,
   projectId,
   walletConnectVersion = "2",
-  ...options
 }) => {
   const isSafePalInjected =
     typeof window !== "undefined" &&
@@ -51,11 +51,9 @@ export const SafepalV2 = ({
         ? getWalletConnectConnector({
             projectId,
             chains,
-            version: walletConnectVersion,
           })
         : new InjectedConnector({
             chains,
-            options,
           });
       return {
         connector,

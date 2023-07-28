@@ -56,6 +56,8 @@ const connectors = connectorsForWallets([
   },
 ]);
 
+console.log(trustWallet);
+
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
