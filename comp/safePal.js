@@ -68,27 +68,6 @@ export const Safepal = ({ chains, projectId, walletConnectVersion = "2" }) => ({
         },
       },
 
-      qrCode: {
-        getUri: async () => {
-          const provider = await connector.getProvider();
-          const uri = await new Promise((resolve) =>
-            provider.once("display_uri", resolve)
-          );
-          return "https://www.safepal.com/en/download/";
-        },
-        instructions: {
-          learnMoreUrl:
-            "https://www.safepal.com/?utm_source=bit5&utm_campaign=bit5",
-          steps: [
-            {
-              description: "We recommend use SafePal browser extension.",
-              step: "install",
-              title: "Open the SafePal app",
-            },
-          ],
-        },
-      },
-
       extension: {
         instructions: {
           learnMoreUrl:
