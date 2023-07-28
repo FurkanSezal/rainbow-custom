@@ -48,8 +48,8 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     setTimeout(() => {
-      b(true);
-    }, 5000);
+      if (typeof window !== "undefined" && window.ethereum) b(true);
+    }, 50);
   }, []);
 
   if (!a) {
