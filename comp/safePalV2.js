@@ -6,15 +6,26 @@ import {
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
-function isSafePal(ethereum) {
-  const isSafePalx = Boolean(ethereum.isSafePal);
-  console.log("isSafePal: ", isSafePalx, ethereum);
-
-  if (!isSafePalx) {
-    return false;
+function getSafePalWalletInjectedProvider() {
+  var _a;
+  const isSafePalWallet = (ethereum) => {
+    const SafePalWallet2 = !!ethereum.isTrust;
+    return SafePalWallet2;
+  };
+  const injectedProviderExist =
+    typeof window !== "undefined" && typeof window.ethereum !== "undefined";
+  if (!injectedProviderExist) {
+    return;
   }
-
-  return true;
+  if (window["isSafePal"]) {
+    return window["isSafePal"];
+  }
+  if (isSafePalWallet(window.ethereum)) {
+    return window.ethereum;
+  }
+  if ((_a = window.ethereum) == null ? void 0 : _a.providers) {
+    return window.ethereum.providers.find(isSafePalWallet);
+  }
 }
 
 export const SafepalV2 = ({
@@ -22,6 +33,8 @@ export const SafepalV2 = ({
   projectId,
   walletConnectVersion = "2",
 }) => {
+  const isSafePalWalletInjected = Boolean(getSafePalWalletInjectedProvider());
+  const shouldUseWalletConnect = !isSafePalWalletInjected;
   return {
     id: "SafePalV2",
     name: "SafePalV2",
@@ -37,16 +50,7 @@ export const SafepalV2 = ({
     },
 
     createConnector: () => {
-      const isSafePalInjected =
-        typeof window !== "undefined" &&
-        typeof window.ethereum !== "undefined" &&
-        isSafePal(window.ethereum);
-      const shouldUseWalletConnect = !isSafePalInjected;
-
-      typeof window !== "undefined" && console.log(window);
-
       console.log("shouldUseWalletConnect: ", shouldUseWalletConnect);
-      console.log("_isSafePalInjected", isSafePalInjected);
 
       const connector = shouldUseWalletConnect
         ? getWalletConnectConnector({
