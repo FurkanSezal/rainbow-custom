@@ -58,6 +58,7 @@ export default function App({ Component, pageProps }) {
     } else {
       setTimeout(() => checkWindowEthereum(attempt + 1), 50);
     }
+    console.log(a);
   };
 
   if (!a) {
