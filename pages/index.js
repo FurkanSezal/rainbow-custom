@@ -82,6 +82,14 @@ export default function Home() {
     console.log(blockNumber); */
   }
 
+  async function handleSecondClick() {
+    const signature = await walletClient.data.signMessage({
+      account: address,
+      message: "hello world",
+    });
+    setSig(signature);
+  }
+
   return (
     <>
       <div>
@@ -98,6 +106,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <button onClick={handleClick}>Hello</button>
+      <button onClick={handleSecondClick}>Second Click</button>
       <div>{sig}</div>
     </>
   );
