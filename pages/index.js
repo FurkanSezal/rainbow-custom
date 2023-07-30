@@ -13,12 +13,14 @@ import {
   useAccount,
   useNetwork,
 } from "wagmi";
+import { useState } from "react";
 
 export default function Home() {
   const walletClient = useWalletClient();
   const publicClient = usePublicClient();
   const { address, isConnecting, isDisconnected } = useAccount();
 
+  const [sig, setSig] = useState();
   const { open, close } = useWeb3Modal();
 
   async function handleClick() {
@@ -74,6 +76,7 @@ export default function Home() {
     });
 
     console.log(signature);
+    setSig(signature);
 
     /*   const blockNumber = await publicClient.getBlockNumber();
     console.log(blockNumber); */
@@ -95,6 +98,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <button onClick={handleClick}>Hello</button>
+      <div>{sig}</div>
     </>
   );
 }
