@@ -42,26 +42,6 @@ const Disclaimer = ({ Text, Link }) => (
 
 const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 
-const connectors = connectorsForWallets([
-  {
-    groupName: "Recommended",
-
-    wallets: [
-      metaMaskWallet({ chains, projectId }),
-      walletConnectWallet({ chains, projectId }),
-      trustWallet({ chains, projectId }),
-      SafepalV2({ chains, projectId }),
-    ],
-  },
-]);
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-});
-
 export default function App({ Component, pageProps }) {
   const [isSafePal, setSafePal] = useState(false);
   const [count, setCount] = useState(0);
@@ -79,6 +59,26 @@ export default function App({ Component, pageProps }) {
   if (!isSafePal) {
     return null;
   }
+
+  const connectors = connectorsForWallets([
+    {
+      groupName: "Recommended",
+
+      wallets: [
+        metaMaskWallet({ chains, projectId }),
+        walletConnectWallet({ chains, projectId }),
+        trustWallet({ chains, projectId }),
+        SafepalV2({ chains, projectId }),
+      ],
+    },
+  ]);
+
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient,
+    webSocketPublicClient,
+  });
 
   return (
     <>
