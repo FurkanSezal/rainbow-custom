@@ -69,9 +69,7 @@ export const SafepalV2 = ({
     },
 
     createConnector: () => {
-      const connector = new MetaMaskConnector({
-        chains,
-      });
+      const connector = new InjectedConnector({ projectId, chains });
       return {
         connector,
         mobile: {
