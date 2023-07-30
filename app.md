@@ -6,7 +6,6 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { EthereumClient } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
-import { Safepal } from "../comp/safePal";
 
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
@@ -17,6 +16,7 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 import { SafepalV2 } from "../comp/safePalV2";
 import { rainbowWallet } from "../comp/custom";
+import { useEffect, useState } from "react";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [bscTestnet, mainnet],
@@ -42,32 +42,44 @@ const Disclaimer = ({ Text, Link }) => (
 
 const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 
-const connectors = connectorsForWallets([
-  {
-    groupName: "Recommended",
-
-    wallets: [
-      metaMaskWallet({ chains, projectId }),
-      Safepal({ chains, projectId }),
-      injectedWallet({ chains }),
-      walletConnectWallet({ chains, projectId }),
-      trustWallet({ chains, projectId }),
-      SafepalV2({ chains, projectId }),
-      rainbowWallet({ chains, projectId }),
-    ],
-  },
-]);
-
-console.log(trustWallet);
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-});
-
 export default function App({ Component, pageProps }) {
+  const [isSafePal, setSafePal] = useState(false);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (count < 5 && !isSafePal) {
+      setTimeout(() => {
+        if ((typeof window !== "undefined" && window.ethereum) || count == 4)
+          setSafePal(true);
+        setCount(count + 1); // Increment the count after execution
+      }, 50);
+    }
+  }, [count]); // Add the count to the dependency array
+
+  if (!isSafePal) {
+    return null;
+  }
+
+  const connectors = connectorsForWallets([
+    {
+      groupName: "Recommended",
+
+      wallets: [
+        metaMaskWallet({ chains, projectId }),
+        walletConnectWallet({ chains, projectId }),
+        trustWallet({ chains, projectId }),
+        SafepalV2({ chains, projectId }),
+      ],
+    },
+  ]);
+
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient,
+    webSocketPublicClient,
+  });
+
   return (
     <>
       <WagmiConfig config={wagmiConfig}>

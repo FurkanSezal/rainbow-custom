@@ -1,99 +1,38 @@
-import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  EthereumClient,
+  w3mConnectors,
+  w3mProvider,
+} from "@web3modal/ethereum";
+import { Web3Modal } from "@web3modal/react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { bscTestnet, mainnet } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
-import { EthereumClient } from "@web3modal/ethereum";
-import { Web3Modal } from "@web3modal/react";
 
-import { connectorsForWallets } from "@rainbow-me/rainbowkit";
-import {
-  injectedWallet,
-  trustWallet,
-  walletConnectWallet,
-  metaMaskWallet,
-} from "@rainbow-me/rainbowkit/wallets";
-import { SafepalV2 } from "../comp/safePalV2";
-import { rainbowWallet } from "../comp/custom";
-import { useEffect, useState } from "react";
-
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [bscTestnet, mainnet],
-  [publicProvider()]
-);
-
-const Disclaimer = ({ Text, Link }) => (
-  <Text>
-    By connecting your wallet, you agree to the{" "}
-    <Link href="https://docs.bit5.com/legal/privacy-policy">
-      Terms of Service
-    </Link>{" "}
-    and acknowledge you have read and understand the protocol{" "}
-    <Link href="https://docs.bit5.com/legal/terms-of-service">Disclaimer</Link>
-  </Text>
-);
-
-/* const { connectors } = getDefaultWallets({
-  appName: "My RainbowKit App",
-  projectId: "aae3fa2b14df431fd3674300c0ee1b7e",
-  chains,
-}); */
-
+const chains = [bscTestnet, mainnet];
 const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 
+const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
+const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors: w3mConnectors({ projectId, chains }),
+  publicClient,
+});
+const ethereumClient = new EthereumClient(wagmiConfig, chains);
+
 export default function App({ Component, pageProps }) {
-  const [isSafePal, setSafePal] = useState(false);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (count < 5 && !isSafePal) {
-      setTimeout(() => {
-        if ((typeof window !== "undefined" && window.ethereum) || count == 4)
-          setSafePal(true);
-        setCount(count + 1); // Increment the count after execution
-      }, 50);
-    }
-  }, [count]); // Add the count to the dependency array
-
-  if (!isSafePal) {
-    return null;
-  }
-
-  const connectors = connectorsForWallets([
-    {
-      groupName: "Recommended",
-
-      wallets: [
-        metaMaskWallet({ chains, projectId }),
-        walletConnectWallet({ chains, projectId }),
-        trustWallet({ chains, projectId }),
-        SafepalV2({ chains, projectId }),
-      ],
-    },
-  ]);
-
-  const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors,
-    publicClient,
-    webSocketPublicClient,
-  });
-
   return (
     <>
       <WagmiConfig config={wagmiConfig}>
-        <RainbowKitProvider
-          coolMode
-          appInfo={{
-            appName: "Bit5 MarketPlace",
-            disclaimer: Disclaimer,
-          }}
-          chains={chains}
-        >
-          <Component {...pageProps} />;
-        </RainbowKitProvider>
+        <Component {...pageProps} />;
       </WagmiConfig>
+      <Web3Modal
+        explorerRecommendedWalletIds={[
+          "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",
+          "1ae92b26df02f0abca6304df07debccd18262fdf5fe82daa81593582dac9a369",
+          "8a0ee50d1f22f6651afcae7eb4253e52a3310b90af5daef78a8c4929a9bb99d4",
+        ]}
+        projectId={projectId}
+        ethereumClient={ethereumClient}
+      />
     </>
   );
 }
