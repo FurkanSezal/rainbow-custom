@@ -8,9 +8,9 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 
 function getSafePalWalletInjectedProvider() {
   const isSafePalWallet = (ethereum) => {
-    // Identify if Trust Wallet injected provider is present.
+    // Identify if SafePal Wallet injected provider is present.
     const SafePalWallet = !!ethereum.isSafePal;
-    console.log("SafePalWallet: ", SafePalWallet, ethereum.isSafePal);
+
     return SafePalWallet;
   };
 
@@ -22,7 +22,7 @@ function getSafePalWalletInjectedProvider() {
     return;
   }
 
-  // Trust Wallet injected provider is available in the global scope.
+  // SafePal Wallet injected provider is available in the global scope.
   // There are cases that some cases injected providers can replace window.ethereum
   // without updating the ethereum.providers array. To prevent issues where
   // the TW connector does not recognize the provider when TW extension is installed,
@@ -31,12 +31,12 @@ function getSafePalWalletInjectedProvider() {
     return window["isSafePal"];
   }
 
-  // Trust Wallet was injected into window.ethereum.
+  // SafePal Wallet was injected into window.ethereum.
   if (isSafePalWallet(window.ethereum)) {
     return window.ethereum;
   }
 
-  // Trust Wallet provider might be replaced by another
+  // SafePal Wallet provider might be replaced by another
   // injected provider, check the providers array.
   if (window.ethereum?.providers) {
     // ethereum.providers array is a non-standard way to
@@ -50,13 +50,13 @@ export const SafepalV2 = ({
   projectId,
   walletConnectVersion = "2",
 }) => {
-  typeof window !== "undefined" && console.log("window", window);
-  typeof window !== "undefined" && console.log("eth: ", window.ethereum);
+  /* typeof window !== "undefined" && console.log("window", window);
+  typeof window !== "undefined" && console.log("eth: ", window.ethereum); */
   const isSafePalWalletInjected = Boolean(getSafePalWalletInjectedProvider());
   const shouldUseWalletConnect = !isSafePalWalletInjected;
   return {
-    id: "SafePalV2",
-    name: "SafePalV2",
+    id: "SafePal",
+    name: "SafePal",
     iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
     iconBackground: "#ffffff",
 
@@ -69,8 +69,6 @@ export const SafepalV2 = ({
     },
 
     createConnector: () => {
-      console.log("shouldUseWalletConnect: ", shouldUseWalletConnect);
-
       const connector = new MetaMaskConnector({
         chains,
       });

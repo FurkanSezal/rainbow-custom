@@ -6,7 +6,6 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { EthereumClient } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
-import { Safepal } from "../comp/safePal";
 
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
@@ -44,19 +43,20 @@ const Disclaimer = ({ Text, Link }) => (
 const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 
 export default function App({ Component, pageProps }) {
-  const [a, b] = useState(false);
+  const [isSafePal, setSafePal] = useState(false);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (count < 5 && !a) {
+    if (count < 5 && !isSafePal) {
       setTimeout(() => {
-        if (typeof window !== "undefined" && window.ethereum) b(true);
+        if ((typeof window !== "undefined" && window.ethereum) || count == 4)
+          setSafePal(true);
         setCount(count + 1); // Increment the count after execution
       }, 50);
     }
   }, [count]); // Add the count to the dependency array
 
-  if (!a) {
+  if (!isSafePal) {
     return null;
   }
 
@@ -66,12 +66,9 @@ export default function App({ Component, pageProps }) {
 
       wallets: [
         metaMaskWallet({ chains, projectId }),
-        Safepal({ chains, projectId }),
-        injectedWallet({ chains }),
         walletConnectWallet({ chains, projectId }),
         trustWallet({ chains, projectId }),
         SafepalV2({ chains, projectId }),
-        rainbowWallet({ chains, projectId }),
       ],
     },
   ]);
