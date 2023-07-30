@@ -61,9 +61,6 @@ export const SafepalV2 = ({
     iconBackground: "#ffffff",
 
     downloadUrls: {
-      android:
-        "https://play.google.com/store/apps/details?id=io.safepal.wallet",
-      ios: "https://apps.apple.com/tr/app/safepal-crypto-wallet-btc-nft/id1548297139",
       chrome:
         "https://www.safepal.com/en/download/?utm_source=bit5&utm_campaign=bit5",
     },
