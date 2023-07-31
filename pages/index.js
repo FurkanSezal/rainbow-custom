@@ -84,6 +84,14 @@ export default function Home() {
     console.log(blockNumber); */
   }
 
+  async function handleSign() {
+    const signature = await walletClient.data.signMessage({
+      account: address,
+      message: "hello world",
+    });
+    setSig(signature);
+  }
+
   return (
     <>
       {/*   <div>
@@ -92,7 +100,7 @@ export default function Home() {
       <div>
         <ConnectButton></ConnectButton>
       </div>
-      <button onClick={() => open()}>Connect</button>
+      <button onClick={handleSign}>signMessage</button>
       {/*   <Header></Header> */}
       <Head>
         <title>Create Next App</title>
@@ -100,7 +108,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <button onClick={handleClick}>Hello</button>
+      <button onClick={handleClick}>signTypedData</button>
       <div>{sig}</div>
     </>
   );
