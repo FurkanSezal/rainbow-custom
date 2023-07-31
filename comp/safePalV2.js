@@ -66,7 +66,16 @@ export const SafepalV2 = ({
     },
 
     createConnector: () => {
-      const connector = new InjectedConnector({ projectId, chains });
+      const connector = shouldUseWalletConnect
+        ? getWalletConnectConnector({
+            projectId,
+            chains,
+            version: walletConnectVersion,
+          })
+        : new InjectedConnector({
+            chains,
+          });
+
       return {
         connector,
         mobile: {
