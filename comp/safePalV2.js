@@ -75,7 +75,7 @@ export const SafepalV2 = ({
             const uri = await new Promise((resolve) =>
               provider.once("display_uri", resolve)
             );
-            return "https://www.safepal.com/en/download/?utm_source=bit5&utm_campaign=bit5";
+            return uri;
           },
         },
 
