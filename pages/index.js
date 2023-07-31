@@ -23,6 +23,8 @@ export default function Home() {
 
   const [sig, setSig] = useState();
 
+  const [val, setVal] = useState(false);
+
   const { open, close } = useWeb3Modal();
 
   async function handleClick() {
@@ -90,6 +92,15 @@ export default function Home() {
       message: "hello world",
     });
     setSig(signature);
+
+    const valid = await publicClient.verifyMessage({
+      address: address,
+      message: "hello world",
+      signature,
+    });
+
+    console.log(valid);
+    setVal(valid);
   }
 
   return (
@@ -109,7 +120,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <button onClick={handleClick}>signTypedData</button>
-      <div>{sig}</div>
+      <div>Sig: {sig}</div>
+      <div>Valid: {val}</div>
     </>
   );
 }
