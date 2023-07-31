@@ -164,7 +164,7 @@ export default function Home() {
   }
 
   async function handleVerify() {
-    const domain = {
+    /*  const domain = {
       name: "Ether Mail",
       version: "1",
       chainId: 97,
@@ -204,7 +204,15 @@ export default function Home() {
       message,
       signature: sig,
     });
-    console.log(valid);
+    console.log(valid); */
+
+    const valid = await verifyMessage({
+      address: address,
+      message: "hello world",
+      signature: sig,
+    });
+
+    setVal(valid);
   }
 
   useEffect(() => {
@@ -231,7 +239,7 @@ export default function Home() {
       </Head>
       <button onClick={handleClick}>signTypedData</button>
       <div>Sig: {sig}</div>
-      <div>Valid: {(val, addresss)}</div>
+      <div>Valid: {val ? address : "asdasdsad"}</div>
       <button onClick={handleVerify}>verify</button>
     </>
   );
