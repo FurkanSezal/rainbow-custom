@@ -1,7 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
-import { getContract, parseEther } from "viem";
+import {
+  getContract,
+  parseEther,
+  recoverMessageAddress,
+  verifyMessage,
+  verifyTypedData,
+} from "viem";
 import { abi } from "../comp/abi";
 import { Web3Button } from "@web3modal/react";
 import { useWeb3Modal } from "@web3modal/react";
@@ -14,16 +20,17 @@ import {
   useNetwork,
 } from "wagmi";
 import { Header } from "../comp/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const walletClient = useWalletClient();
   const publicClient = usePublicClient();
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { address, isConnecting, isDisconnected, isConnected } = useAccount();
 
   const [sig, setSig] = useState();
 
-  const [val, setVal] = useState(false);
+  const [val, setVal] = useState();
+  const [addresss, setAddress] = useState(false);
 
   const { open, close } = useWeb3Modal();
 
@@ -93,15 +100,118 @@ export default function Home() {
     });
     setSig(signature);
 
-    const valid = await publicClient.verifyMessage({
+    /*     const valid = await verifyMessage({
       address: address,
       message: "hello world",
       signature,
     });
 
     console.log(valid);
-    setVal(valid);
+
+    if (valid) {
+      setVal(111);
+      console.log("hello");
+    }
+
+    const addressxx = await recoverMessageAddress({
+      message: "hello world",
+      signature,
+    });
+    setAddress(addressxx); */
+
+    /*     const signer = ethers.utils.verifyMessage(
+      hashMessage("hello world"),
+      signature
+    );
+
+    console.log(signer); */
   }
+
+  async function signToLogin() {
+    const signature = await walletClient.data.signTypedData({
+      account: address,
+      domain: {
+        name: "Ether Mail",
+        version: "1",
+        chainId: 97,
+        verifyingContract: "0x0000000000000000000000000000000000000000",
+      },
+      types: {
+        Person: [
+          { name: "name", type: "string" },
+          { name: "wallet", type: "address" },
+        ],
+        Mail: [
+          { name: "from", type: "Person" },
+          { name: "to", type: "Person" },
+          { name: "contents", type: "string" },
+        ],
+      },
+      primaryType: "Mail",
+      message: {
+        from: {
+          name: "Cow",
+          wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+        },
+        to: {
+          name: "Bob",
+          wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+        },
+        contents: "Hello, Bob!",
+      },
+    });
+    setSig(signature);
+  }
+
+  async function handleVerify() {
+    const domain = {
+      name: "Ether Mail",
+      version: "1",
+      chainId: 97,
+      verifyingContract: "0x0000000000000000000000000000000000000000",
+    };
+
+    // The named list of all type definitions
+    const types = {
+      Person: [
+        { name: "name", type: "string" },
+        { name: "wallet", type: "address" },
+      ],
+      Mail: [
+        { name: "from", type: "Person" },
+        { name: "to", type: "Person" },
+        { name: "contents", type: "string" },
+      ],
+    };
+
+    const message = {
+      from: {
+        name: "Cow",
+        wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+      },
+      to: {
+        name: "Bob",
+        wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+      },
+      contents: "Hello, Bob!",
+    };
+    console.log(sig);
+    const valid = await verifyTypedData({
+      address: address,
+      domain,
+      types,
+      primaryType: "Mail",
+      message,
+      signature: sig,
+    });
+    console.log(valid);
+  }
+
+  useEffect(() => {
+    if (walletClient.isSuccess) {
+      //signToLogin();
+    }
+  }, [walletClient.isSuccess]);
 
   return (
     <>
@@ -121,7 +231,8 @@ export default function Home() {
       </Head>
       <button onClick={handleClick}>signTypedData</button>
       <div>Sig: {sig}</div>
-      <div>Valid: {val}</div>
+      <div>Valid: {(val, addresss)}</div>
+      <button onClick={handleVerify}>verify</button>
     </>
   );
 }
