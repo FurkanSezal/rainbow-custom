@@ -1,7 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { bscTestnet, mainnet } from "wagmi/chains";
+import { bscTestnet, mainnet, goerli } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { EthereumClient } from "@web3modal/ethereum";
@@ -13,13 +13,14 @@ import {
   trustWallet,
   walletConnectWallet,
   metaMaskWallet,
+  rabbyWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { SafepalV2 } from "../comp/safePalV2";
 import { rainbowWallet } from "../comp/custom";
 import { useEffect, useState } from "react";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [bscTestnet, mainnet],
+  [bscTestnet, mainnet, goerli],
   [publicProvider()]
 );
 
@@ -69,6 +70,7 @@ export default function App({ Component, pageProps }) {
         walletConnectWallet({ chains, projectId }),
         trustWallet({ chains, projectId }),
         SafepalV2({ chains, projectId }),
+        rabbyWallet({ chains, projectId }),
       ],
     },
   ]);

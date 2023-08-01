@@ -40,7 +40,7 @@ export default function Home() {
       domain: {
         name: "Ether Mail",
         version: "1",
-        chainId: 97,
+        chainId: 5,
         verifyingContract: "0x0000000000000000000000000000000000000000",
       },
       types: {
@@ -164,10 +164,10 @@ export default function Home() {
   }
 
   async function handleVerify() {
-    /*  const domain = {
+    const domain = {
       name: "Ether Mail",
       version: "1",
-      chainId: 97,
+      chainId: 5,
       verifyingContract: "0x0000000000000000000000000000000000000000",
     };
 
@@ -204,15 +204,15 @@ export default function Home() {
       message,
       signature: sig,
     });
-    console.log(valid); */
+    console.log(valid);
 
-    const valid = await verifyMessage({
+    /*     const valid = await verifyMessage({
       address: address,
       message: "hello world",
       signature: sig,
     });
 
-    setVal(valid);
+    setVal(valid); */
   }
 
   useEffect(() => {
