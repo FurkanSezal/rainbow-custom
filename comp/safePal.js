@@ -55,6 +55,7 @@ export const Safepal = ({ chains, projectId, walletConnectVersion = "2" }) => {
     name: "SafePal",
     iconUrl: "https://img.bit5.com/wallets/safepal/color-icon.png",
     iconBackground: "#ffffff",
+    installed: shouldUseWalletConnect ? isSafePalWalletInjected : undefined,
 
     downloadUrls: {
       chrome:

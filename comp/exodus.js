@@ -2,7 +2,7 @@ import { getWalletConnectConnector } from "@rainbow-me/rainbowkit";
 import { InjectedConnector } from "wagmi/connectors/injected";
 
 function getExodusWalletInjectedProvider() {
-  const isexodusWallet = (ethereum) => {
+  const isExodusWallet = (ethereum) => {
     const exodusWallet = !!ethereum.isExodus;
 
     return exodusWallet;
@@ -19,12 +19,12 @@ function getExodusWalletInjectedProvider() {
     return window["isExodus"];
   }
 
-  if (isexodusWallet(window.ethereum)) {
+  if (isExodusWallet(window.ethereum)) {
     return window.ethereum;
   }
 
   if (window.ethereum?.providers) {
-    return window.ethereum.providers.find(isexodusWallet);
+    return window.ethereum.providers.find(isExodusWallet);
   }
 }
 export const exodusWallet = ({
@@ -41,6 +41,7 @@ export const exodusWallet = ({
     name: "Exodus",
     iconUrl: "https://i.imgur.com/E5ywghE.png",
     iconBackground: "#ffffff",
+    installed: shouldUseWalletConnect ? isExodusWalletInjected : undefined,
 
     downloadUrls: {
       chrome:
