@@ -40,7 +40,7 @@ export default function Home() {
       domain: {
         name: "Ether Mail",
         version: "1",
-        chainId: 5,
+        chainId: 1,
         verifyingContract: "0x0000000000000000000000000000000000000000",
       },
       types: {
@@ -167,7 +167,7 @@ export default function Home() {
     const domain = {
       name: "Ether Mail",
       version: "1",
-      chainId: 5,
+      chainId: 1,
       verifyingContract: "0x0000000000000000000000000000000000000000",
     };
 

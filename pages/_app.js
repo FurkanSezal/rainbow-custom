@@ -15,8 +15,9 @@ import {
   metaMaskWallet,
   rabbyWallet,
 } from "@rainbow-me/rainbowkit/wallets";
-import { SafepalV2 } from "../comp/safePalV2";
+import { Safepal } from "../comp/safePal";
 import { rainbowWallet } from "../comp/custom";
+import { exodusWallet } from "../comp/exodus";
 import { useEffect, useState } from "react";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -74,8 +75,9 @@ export default function App({ Component, pageProps }) {
         metaMaskWallet({ chains, projectId }),
         walletConnectWallet({ chains, projectId }),
         trustWallet({ chains, projectId }),
-        SafepalV2({ chains, projectId }),
+        Safepal({ chains, projectId }),
         rabbyWallet({ chains, projectId }),
+        exodusWallet({ chains, projectId }),
       ],
     },
   ]);
