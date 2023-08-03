@@ -51,7 +51,13 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     if (count < 5 && !isSafePal) {
       setTimeout(() => {
-        if ((typeof window !== "undefined" && window.ethereum) || count == 4)
+        if (
+          (typeof window !== "undefined" &&
+            window.ethereum &&
+            window.ethereum.isRabby &&
+            window.ethereum.isExodus) ||
+          count == 4
+        )
           setSafePal(true);
         setCount(count + 1); // Increment the count after execution
       }, 50);
