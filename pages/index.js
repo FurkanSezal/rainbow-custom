@@ -28,8 +28,6 @@ export default function Home() {
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
   const chain = useNetwork();
 
-  console.log(chain);
-
   const [sig, setSig] = useState();
 
   const [val, setVal] = useState();

@@ -49,8 +49,6 @@ export default function App({ Component, pageProps }) {
     return null;
   }
 
-  console.log(window.ethereum);
-
   const connectors = connectorsForWallets([
     {
       groupName: "Recommended",
