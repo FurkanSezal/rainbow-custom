@@ -54,8 +54,7 @@ export default function App({ Component, pageProps }) {
         if (
           (typeof window !== "undefined" &&
             window.ethereum &&
-            window.ethereum.isRabby &&
-            window.ethereum.isExodus) ||
+            window.ethereum.isRabby) ||
           count == 4
         )
           setSafePal(true);
