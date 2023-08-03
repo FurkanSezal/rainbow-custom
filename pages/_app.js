@@ -1,7 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { bscTestnet, mainnet, goerli, bsc } from "wagmi/chains";
+import { bscTestnet, mainnet, goerli, bsc, zkSyncTestnet } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { EthereumClient } from "@web3modal/ethereum";
@@ -21,7 +21,7 @@ import { exodusWallet } from "../comp/exodus";
 import { useEffect, useState } from "react";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [bscTestnet, mainnet, goerli, bsc],
+  [bscTestnet, mainnet, goerli, bsc, zkSyncTestnet],
   [publicProvider()]
 );
 
@@ -54,7 +54,8 @@ export default function App({ Component, pageProps }) {
         if (
           (typeof window !== "undefined" &&
             window.ethereum &&
-            window.ethereum.isRabby) ||
+            window.ethereum.isRabby &&
+            window.ethereum.isExodus) ||
           count == 4
         )
           setSafePal(true);
