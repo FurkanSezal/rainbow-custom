@@ -4,7 +4,8 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 function getExodusWalletInjectedProvider() {
   const isExodusWallet = (ethereum) => {
     const exodusWallet = !!ethereum.isExodus;
-
+    console.log(ethereum);
+    console.log(ethereum.isExodus);
     return exodusWallet;
   };
 

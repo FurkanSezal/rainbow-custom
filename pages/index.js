@@ -26,6 +26,9 @@ export default function Home() {
   const walletClient = useWalletClient();
   const publicClient = usePublicClient();
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
+  const chain = useNetwork();
+
+  console.log(chain);
 
   const [sig, setSig] = useState();
 
