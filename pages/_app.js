@@ -27,10 +27,7 @@ import { useEffect, useState } from "react";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [sepolia, bscTestnet, mainnet, goerli, bsc, zkSyncTestnet],
-  [
-    alchemyProvider({ apiKey: "YTygk-T9cYyW-O8Q2C_ra0MUzllZJgDb" }),
-    publicProvider(),
-  ]
+  [publicProvider()]
 );
 
 const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
