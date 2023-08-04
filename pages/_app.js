@@ -1,7 +1,14 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { bscTestnet, mainnet, goerli, bsc, zkSyncTestnet } from "wagmi/chains";
+import {
+  bscTestnet,
+  mainnet,
+  goerli,
+  bsc,
+  zkSyncTestnet,
+  sepolia,
+} from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { EthereumClient } from "@web3modal/ethereum";
@@ -19,7 +26,7 @@ import { exodusWallet } from "../comp/exodus";
 import { useEffect, useState } from "react";
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [bscTestnet, mainnet, goerli, bsc, zkSyncTestnet],
+  [sepolia, bscTestnet, mainnet, goerli, bsc, zkSyncTestnet],
   [publicProvider()]
 );
 

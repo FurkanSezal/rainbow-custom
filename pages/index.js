@@ -35,6 +35,13 @@ export default function Home() {
 
   const { open, close } = useWeb3Modal();
 
+  const treasuryContract = getContract({
+    address: "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9",
+    abi: abi,
+    publicClient,
+    walletClient: walletClient.data,
+  });
+
   async function handleClick() {
     const signature = await walletClient.data.signTypedData({
       account: address,
@@ -216,6 +223,12 @@ export default function Home() {
     setVal(valid); */
   }
 
+  async function handleGetData() {
+    console.log(treasuryContract);
+    const value = await treasuryContract.read.name([]);
+    console.log(value);
+  }
+
   useEffect(() => {
     if (walletClient.isSuccess) {
       //signToLogin();
@@ -242,6 +255,7 @@ export default function Home() {
       <div>Sig: {sig}</div>
       <div>Valid: {val ? address : "asdasdsad"}</div>
       <button onClick={handleVerify}>verify</button>
+      <button onClick={handleGetData}>GetData</button>
     </>
   );
 }
