@@ -2,12 +2,12 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import {
-  getContract,
   parseEther,
   recoverMessageAddress,
   verifyMessage,
   verifyTypedData,
 } from "viem";
+import { getContract } from "wagmi/actions";
 import { abi } from "../comp/abi";
 import { Web3Button } from "@web3modal/react";
 import { useWeb3Modal } from "@web3modal/react";
@@ -23,7 +23,7 @@ import { Header } from "../comp/Header";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const walletClient = useWalletClient();
+  const { data: walletClient, isSuccess } = useWalletClient();
   const publicClient = usePublicClient();
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
   const chain = useNetwork();
@@ -37,9 +37,8 @@ export default function Home() {
 
   const treasuryContract = getContract({
     address: "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9",
-    abi: abi,
-    publicClient,
-    walletClient: walletClient.data,
+    abi,
+    walletClient,
   });
 
   async function handleClick() {
@@ -231,10 +230,10 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (walletClient.isSuccess) {
+    if (isSuccess) {
       //signToLogin();
     }
-  }, [walletClient.isSuccess]);
+  }, [isSuccess]);
 
   return (
     <>
