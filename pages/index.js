@@ -213,6 +213,7 @@ export default function Home() {
       signature: sig,
     });
     console.log(valid);
+    setVal(valid);
 
     /*     const valid = await verifyMessage({
       address: address,
@@ -254,7 +255,7 @@ export default function Home() {
       </Head>
       <button onClick={handleClick}>signTypedData</button>
       <div>Sig: {sig}</div>
-      <div>Valid: {val ? address : "asdasdsad"}</div>
+      <div>Valid: {val ? "true" : "false"}</div>
       <button onClick={handleVerify}>verify</button>
       <button onClick={handleGetData}>GetData</button>
     </>
