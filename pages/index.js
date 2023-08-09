@@ -102,7 +102,7 @@ export default function Home() {
   }
 
   async function handleSign() {
-    const signature = await walletClient.data.signMessage({
+    const signature = await walletClient.signMessage({
       account: address,
       message: "hello world",
     });
@@ -136,7 +136,7 @@ export default function Home() {
   }
 
   async function signToLogin() {
-    const signature = await walletClient.data.signTypedData({
+    const signature = await walletClient.signTypedData({
       account: address,
       domain: {
         name: "Ether Mail",
