@@ -43,7 +43,7 @@ export default function Home() {
   });
 
   async function handleClick() {
-    const signature = await walletClient.data.signTypedData({
+    const signature = await walletClient.signTypedData({
       account: address,
       domain: {
         name: "Ether Mail",
