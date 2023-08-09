@@ -2,12 +2,13 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import {
+  getContract,
   parseEther,
   recoverMessageAddress,
   verifyMessage,
   verifyTypedData,
 } from "viem";
-import { getContract } from "wagmi/actions";
+//import { getContract } from "wagmi/actions";
 import { abi } from "../comp/abi";
 import { Web3Button } from "@web3modal/react";
 import { useWeb3Modal } from "@web3modal/react";
@@ -174,7 +175,7 @@ export default function Home() {
     const domain = {
       name: "Ether Mail",
       version: "1",
-      chainId: 0x118,
+      chainId: 1,
       verifyingContract: "0x0000000000000000000000000000000000000000",
     };
 
