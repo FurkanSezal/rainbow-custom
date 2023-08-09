@@ -35,6 +35,7 @@ const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 export default function App({ Component, pageProps }) {
   const [isSafePal, setSafePal] = useState(false);
   const [count, setCount] = useState(0);
+  const [wagmiClient, setWagmiClient] = useState(null);
 
   useEffect(() => {
     if (count < 5 && !isSafePal) {
@@ -42,45 +43,45 @@ export default function App({ Component, pageProps }) {
         if (
           (typeof window !== "undefined" &&
             window.ethereum &&
-            window.ethereum.isRabby &&
-            window.ethereum.isExodus) ||
+            window.ethereum.isRabby) ||
           count == 4
-        )
+        ) {
+          const connectors = connectorsForWallets([
+            {
+              groupName: "Recommended",
+
+              wallets: [
+                metaMaskWallet({ chains, projectId }),
+                trustWallet({ chains, projectId }),
+                walletConnectWallet({ chains, projectId }),
+                Safepal({ chains, projectId }),
+              ],
+            },
+          ]);
+
+          setWagmiClient(
+            createConfig({
+              connectors,
+              autoConnect: true,
+              publicClient,
+              webSocketPublicClient,
+            })
+          );
+
           setSafePal(true);
-        setCount(count + 1); // Increment the count after execution
+        }
+        setCount(count + 1);
       }, 50);
     }
-  }, [count]); // Add the count to the dependency array
+  }, [count]);
 
   if (!isSafePal) {
     return null;
   }
 
-  const connectors = connectorsForWallets([
-    {
-      groupName: "Recommended",
-
-      wallets: [
-        metaMaskWallet({ chains, projectId }),
-        walletConnectWallet({ chains, projectId }),
-        trustWallet({ chains, projectId }),
-        Safepal({ chains, projectId }),
-        rabbyWallet({ chains, projectId }),
-        exodusWallet({ chains, projectId }),
-      ],
-    },
-  ]);
-
-  const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors,
-    publicClient,
-    webSocketPublicClient,
-  });
-
   return (
     <>
-      <WagmiConfig config={wagmiConfig}>
+      <WagmiConfig config={wagmiClient}>
         <RainbowKitProvider chains={chains}>
           <Component {...pageProps} />;
         </RainbowKitProvider>
