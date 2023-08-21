@@ -278,17 +278,8 @@ export default function Home() {
     console.log("gasPrice", gasPrice);
     console.log(formatEther(gas * gasPrice)); */
 
-    /*     const tx = await treasuryContract.write.approve([address, 10000]);
-    console.log(tx); */
-    const acceptTermsMessage = `\n Welcome to Bit5!  Click \n to sign in and accept the Bit5 Terms of Service (https://docs.bit5.com/legal/terms-of-service) and Privacy Policy (https://docs.bit5.com/legal/privacy-policy).This request will not trigger a blockchain transaction or cost any gas fees.`;
-
-    const msg = `0x${Buffer.from(acceptTermsMessage, "utf8").toString("hex")}`;
-
-    const signature = await (window?.ethereum?.request)({
-      method: "personal_sign",
-      params: [msg, address],
-    });
-    console.log(signature);
+    const tx = await treasuryContract.write.approve([address, 10000]);
+    console.log(tx);
   }
 
   useEffect(() => {

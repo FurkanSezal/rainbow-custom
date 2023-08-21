@@ -30,7 +30,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [publicProvider()]
 );
 
-const projectId = "491b125a2c55325ef23f2c11955ff58f";
+const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
 
 export default function App({ Component, pageProps }) {
   const [isSafePal, setSafePal] = useState(false);
@@ -55,7 +55,6 @@ export default function App({ Component, pageProps }) {
                 trustWallet({ chains, projectId }),
                 walletConnectWallet({ chains, projectId }),
                 Safepal({ chains, projectId }),
-                exodusWallet({ chains, projectId }),
               ],
             },
           ]);
