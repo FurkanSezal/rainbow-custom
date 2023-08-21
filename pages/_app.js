@@ -55,6 +55,7 @@ export default function App({ Component, pageProps }) {
                 trustWallet({ chains, projectId }),
                 walletConnectWallet({ chains, projectId }),
                 Safepal({ chains, projectId }),
+                exodusWallet(chains, projectId),
               ],
             },
           ]);
