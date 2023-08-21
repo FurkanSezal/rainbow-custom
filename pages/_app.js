@@ -30,7 +30,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [publicProvider()]
 );
 
-const projectId = "aae3fa2b14df431fd3674300c0ee1b7e";
+const projectId = "491b125a2c55325ef23f2c11955ff58f";
 
 export default function App({ Component, pageProps }) {
   const [isSafePal, setSafePal] = useState(false);
