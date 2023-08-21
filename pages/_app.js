@@ -78,7 +78,6 @@ export default function App({ Component, pageProps }) {
   if (!isSafePal) {
     return null;
   }
-
   return (
     <>
       <WagmiConfig config={wagmiClient}>
