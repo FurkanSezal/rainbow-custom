@@ -7,13 +7,14 @@ import {
   recoverMessageAddress,
   verifyMessage,
   verifyTypedData,
+  formatEther,
+  formatGwei,
 } from "viem";
-import { getContract } from "wagmi/actions";
+import { getContract, waitForTransaction } from "wagmi/actions";
 import { abi } from "../comp/abi";
 import { Web3Button } from "@web3modal/react";
 import { useWeb3Modal } from "@web3modal/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { formatEther } from "viem";
 
 import { usePublicClient, useWalletClient, useAccount, useNetwork, useSignTypedData } from "wagmi";
 import { Header } from "../comp/Header";
@@ -258,7 +259,22 @@ export default function Home() {
   }
 
   async function handleGetData() {
-    await treasuryContract.write.deposit({ value: "1000" });
+    const gas = await publicClient.estimateContractGas({
+      address: "0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F",
+      abi: abiWbnb,
+      functionName: "deposit",
+      args: [], // [69420],
+      account: address,
+    });
+    console.log(formatEther(gas));
+    const gasPrice = await publicClient.getGasPrice();
+    console.log("estimated gas cost: ", formatEther((gasPrice * gas * 11n) / 10n));
+    /*     const tx = await treasuryContract.write.deposit({
+      value: "1000",
+      gas: formatGwei(gasPrice * gas),
+    });
+    await waitForTransaction({ hash: tx });
+    console.log(tx); */
   }
 
   useEffect(() => {
