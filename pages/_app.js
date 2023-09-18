@@ -1,14 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import {
-  bscTestnet,
-  mainnet,
-  goerli,
-  bsc,
-  zkSyncTestnet,
-  sepolia,
-} from "wagmi/chains";
+import { bscTestnet, mainnet, goerli, bsc, zkSyncTestnet, sepolia } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { EthereumClient } from "@web3modal/ethereum";
@@ -20,6 +13,7 @@ import {
   walletConnectWallet,
   metaMaskWallet,
   rabbyWallet,
+  injectedWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import { Safepal } from "../comp/safePal";
 import { exodusWallet } from "../comp/exodus";
@@ -41,9 +35,7 @@ export default function App({ Component, pageProps }) {
     if (count < 5 && !isSafePal) {
       setTimeout(() => {
         if (
-          (typeof window !== "undefined" &&
-            window.ethereum &&
-            window.ethereum.isRabby) ||
+          (typeof window !== "undefined" && window.ethereum && window.ethereum.isRabby) ||
           count == 4
         ) {
           const connectors = connectorsForWallets([
@@ -51,6 +43,7 @@ export default function App({ Component, pageProps }) {
               groupName: "Recommended",
 
               wallets: [
+                injectedWallet({ chains }),
                 metaMaskWallet({ chains, projectId }),
                 trustWallet({ chains, projectId }),
                 walletConnectWallet({ chains, projectId }),
