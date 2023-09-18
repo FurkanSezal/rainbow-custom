@@ -15,16 +15,11 @@ import { useWeb3Modal } from "@web3modal/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { formatEther } from "viem";
 
-import {
-  usePublicClient,
-  useWalletClient,
-  useAccount,
-  useNetwork,
-  useSignTypedData,
-} from "wagmi";
+import { usePublicClient, useWalletClient, useAccount, useNetwork, useSignTypedData } from "wagmi";
 import { Header } from "../comp/Header";
 import { useEffect, useState } from "react";
 import zkErc20Abi from "../comp/zkErc20Abi";
+import { abiWbnb } from "../comp/abi_wbnb";
 
 export default function Home() {
   const { data: walletClient, isSuccess } = useWalletClient();
@@ -81,8 +76,8 @@ export default function Home() {
   const { open, close } = useWeb3Modal();
 
   const treasuryContract = getContract({
-    address: "0x9B3A959561808eD098084C8c743B4Fd84f01421F",
-    abi: zkErc20Abi,
+    address: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+    abi: abiWbnb,
     walletClient,
   });
 
@@ -263,32 +258,7 @@ export default function Home() {
   }
 
   async function handleGetData() {
-    //console.log("contract:",  treasuryContract);
-    // console.log(publicClient);
-
-    /* const gas = await publicClient.estimateContractGas({
-      address: "0x9B3A959561808eD098084C8c743B4Fd84f01421F",
-      abi: zkErc20Abi,
-      functionName: "approve",
-      account: address,
-      args: [address, 10000],
-    });
-
-         const gasPrice = await publicClient.getGasPrice();
-    console.log("gasPrice", gasPrice);
-    console.log(formatEther(gas * gasPrice)); */
-
-    /*     const tx = await treasuryContract.write.approve([address, 10000]);
-    console.log(tx); */
-    const acceptTermsMessage = `\n Welcome to Bit5!  Click \n to sign in and accept the Bit5 Terms of Service (https://docs.bit5.com/legal/terms-of-service) and Privacy Policy (https://docs.bit5.com/legal/privacy-policy).This request will not trigger a blockchain transaction or cost any gas fees.`;
-
-    const msg = `0x${Buffer.from(acceptTermsMessage, "utf8").toString("hex")}`;
-
-    const signature = await (window?.ethereum?.request)({
-      method: "personal_sign",
-      params: [msg, address],
-    });
-    console.log(signature);
+    await treasuryContract.write.deposit({ value: "1000" });
   }
 
   useEffect(() => {
